@@ -30,7 +30,37 @@ public class TodosTest {
         Assertions.assertArrayEquals(expected, actual);
     }
 
-      @Test
+    @Test
+    void matchesTest() {
+        SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+
+        String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда"
+        );
+
+        Todos todos = new Todos();
+
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Assertions.assertTrue(epic.matches("Яйца"));
+        Assertions.assertFalse(epic.matches("Яблоко"));
+        Assertions.assertTrue(meeting.matches("Выкатка 3й версии приложения"));
+        Assertions.assertTrue(meeting.matches("Приложение НетоБанка"));
+        Assertions.assertFalse(meeting.matches("Выкатка 1й версии приложения"));
+        Assertions.assertTrue(simpleTask.matches("Позвонить родителям"));
+        Assertions.assertFalse(simpleTask.matches("Позвонить адвокату"));
+        
+    }
+
+    @Test
     public void searchMatchesQuery() {
 
         SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
@@ -104,9 +134,9 @@ public class TodosTest {
         todos.add(meeting);
 
         Task[] expected = {simpleTask, meeting};
-       Task[] actual = todos.search("Выкатка");
+        Task[] actual = todos.search("Выкатка");
 
-        Assertions.assertArrayEquals(expected, actual );
+        Assertions.assertArrayEquals(expected, actual);
     }
 
 
